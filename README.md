@@ -42,7 +42,7 @@ Official integration references:
 
 ## Data and external resources
 
-No analytics, ads, user accounts, chat, or uploads. Progress, Python drafts, and pixel art are stored in localStorage on the device, with graceful handling when storage is unavailable. Clear site data to remove everything; Explore's reset clears completed activities only.
+Google Analytics (`G-S48T3RS4FW`) is included once in the shared page layout to measure visits and site usage. No ads, user accounts, chat, or uploads. Progress, Python drafts, and pixel art are stored in localStorage on the device, with graceful handling when storage is unavailable. Clear site data to remove everything; Explore's reset clears completed activities only.
 
 Fonts load from Google Fonts; Python loads from jsDelivr. Code is executed on the device, not submitted to an execution server. The parent guide explains external requests and data behavior.
 
