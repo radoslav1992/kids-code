@@ -1,0 +1,10 @@
+export const questions=[
+{q:'Bit needs to move two squares right, then one up. Which plan works?',options:['Right, up, up','Right, right, up','Up, left, left'],answer:1,why:'A sequence is an ordered list. Two right commands come first, followed by one up command.'},
+{q:'What is a loop useful for?',options:['Repeating instructions','Making the computer guess','Deleting every mistake'],answer:0,why:'A loop repeats instructions. Repeat right 4 times is shorter than writing four separate right commands.'},
+{q:'What does this program print?',code:'snacks = 3\nsnacks = snacks + 2\nprint(snacks)',options:['3','32','5'],answer:2,why:'snacks starts as the number 3. Adding 2 gives 5, which replaces the old value.'},
+{q:'Which line prints the word Hello?',options:['print("Hello")','print(Hello)','print "Hello"'],answer:0,why:'Quotation marks make Hello a string. Python 3 also needs parentheses around the value passed to print().'},
+{q:'How many times does this loop print Jump?',code:'for step in range(3):\n    print("Jump")',options:['2 times','3 times','4 times'],answer:1,why:'range(3) produces 0, 1, and 2. That is three values, so the loop runs three times.'},
+{q:'Which item is creatures[0]?',code:'creatures = ["otter", "dragon", "robot"]',options:['dragon','robot','otter'],answer:2,why:'Python list indexes start at zero. Index 0 means the first item: otter.'},
+{q:'Why does this code need a fix?',code:'if stars >= 3\n    print("Level up!")',options:['The if line needs a colon at the end','print is always wrong inside an if','The message is too long'],answer:0,why:'An if statement ends in a colon. Its indented lines run when the condition is True. stars also needs a value before this code runs.'},
+{q:'Your program does something unexpected. What is a useful next step?',options:['Assume coding is not for you','Change everything at once','Read the output, change one thing, and try again'],answer:2,why:'Debugging is part of coding. A small change makes it easier to understand what caused the problem. Every programmer does it!'}
+];

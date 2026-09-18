@@ -1,0 +1,5 @@
+---
+const {items}=Astro.props;
+---
+<div class="faq"><span class="eyebrow">Curious? Good.</span><h2>Little questions. Helpful answers.</h2>{items.map(([q,a])=><details><summary>{q}</summary><p>{a}</p></details>)}</div>
+<script type="application/ld+json" set:html={JSON.stringify({'@context':'https://schema.org','@type':'FAQPage',mainEntity:items.map(([q,a])=>({'@type':'Question',name:q,acceptedAnswer:{'@type':'Answer',text:a}}))}).replace(/</g,'\\u003c')}/>

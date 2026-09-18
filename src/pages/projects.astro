@@ -1,0 +1,4 @@
+---
+import Layout from '../layouts/Layout.astro';import {projects} from '../lib/lessons.mjs';
+---
+<Layout title="Fun Python Projects for Kids — Games, Stories & Art | Kids Code"><div class="wrap"><div class="page-head"><span class="eyebrow">The idea factory</span><h1>Make a thing.<br/>Make it your thing.</h1><p>These projects give you a working starting point. Change a word, invent a rule, add a surprise. That’s how an idea becomes yours.</p></div><div class="grid2">{projects.map(p=><a class={'card card-link tint-'+p.color} href={'/playground/?project='+p.id}><div class="card-icon">{p.icon}</div><h2 style="font-size:2rem;margin-top:24px">{p.title}</h2><p>{p.description}</p><div class="card-footer">{p.concepts}<span>Build it →</span></div></a>)}</div><div class="note">Not sure where to begin? Try <a href="/python/">the Python trail</a> first. These projects use ideas from those lessons. You can always come back and remix them.</div></div></Layout>
