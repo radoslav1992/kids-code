@@ -28,7 +28,7 @@ npm run check
 Cloudflare Pages / Workers static assets: build command `npm run build`; output directory `dist`.
 No server, database, login, or API key is required.
 
-**Before production launch, set `SITE_URL` to the final purchased domain** (for example `https://your-chosen-domain.com`) in the build environment. This enables canonical URLs, `sitemap-index.xml`, and the sitemap reference in `robots.txt`. No unowned production domain is assumed. A build with `SITE_URL` should contain 42 sitemap page URLs, excluding the 404 page.
+The production domain is **https://kidscode.dev**, configured directly in `astro.config.mjs`. Every build generates canonical URLs, `sitemap-index.xml`, and the sitemap reference in `robots.txt` for this domain; no `SITE_URL` environment variable is needed. The sitemap contains 42 page URLs, excluding the 404 page.
 
 ## Python execution
 
