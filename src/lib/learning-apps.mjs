@@ -40,6 +40,18 @@ export const learningApps = [
     "path": "M24 48V18l32 30H24 M24 39h9v9 M24 18l16 15"
   },
   {
+    "id": "biology",
+    "name": "Biology Lab",
+    "subject": "Biology",
+    "url": "https://thebiologylab.org",
+    "description": "Cross two parents, translate a gene into protein, and watch a population grow.",
+    "mark": "ATGC",
+    "caption": "the code of life, decoded",
+    "color": "#2f6b45",
+    "tint": "#e4f1e4",
+    "path": "M28 16c0 12 24 12 24 24s-24 12-24 24 M52 16c0 12-24 12-24 24s24 12 24 24 M31 24h18 M31 48h18 M33 40h14"
+  },
+  {
     "id": "kids",
     "name": "Kids Code",
     "subject": "Coding",
