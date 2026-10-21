@@ -1,6 +1,6 @@
-# Kids Code
+# KidsCode
 
-A colorful, kid-centered Astro website for learning programming through play.
+A colorful, kid-centered Astro website for learning programming through play, published at https://kidscode.dev.
 
 ## What's inside
 
@@ -9,9 +9,9 @@ A colorful, kid-centered Astro website for learning programming through play.
 - 8-question debugging and code-prediction activity with explanations.
 - 10 Python lessons with editable code, hints, solutions, and output goals.
 - A real Python playground with input, error feedback, Stop, local drafts, and `.py` download.
-- 4 Python project starters, a 28-term glossary, progress collection, FAQs, and a parent/teacher guide.
+- 4 Python project starters, a 28-term glossary, progress collection, FAQs, a parent/teacher guide, and a printable one-hour coding plan (`/one-hour-coding/`) with three timed routes for classrooms, clubs, and home.
 - 20 guided Blockly missions, a free block playground, live variable watchers, local project files, and a Python bridge.
-- 43 static HTML pages. Responsive layouts, keyboard controls, reduced motion, and original SVG robot artwork.
+- 44 static HTML pages. Responsive layouts, keyboard controls, reduced motion, and original SVG robot artwork.
 
 ## Develop and deploy
 
@@ -28,7 +28,9 @@ npm run check
 Cloudflare Pages / Workers static assets: build command `npm run build`; output directory `dist`.
 No server, database, login, or API key is required.
 
-The production domain is **https://kidscode.dev**, configured directly in `astro.config.mjs`. Every build generates canonical URLs, `sitemap-index.xml`, and the sitemap reference in `robots.txt` for this domain; no `SITE_URL` environment variable is needed. The sitemap contains 42 page URLs, excluding the 404 page.
+The production domain is **https://kidscode.dev**, configured directly in `astro.config.mjs`. Every build generates canonical URLs, `sitemap-index.xml`, and the sitemap reference in `robots.txt` for this domain; no `SITE_URL` environment variable is needed. The sitemap contains 43 page URLs, excluding the 404 page (which is also `noindex`).
+
+`src/layouts/Layout.astro` appends the `KidsCode` brand to page titles and emits Open Graph tags plus JSON-LD: WebSite and Organization on the home page, and BreadcrumbList on nested pages. `src/lib/seo.mjs` builds Course data for the `/blocks/` and `/python/` trails and LearningResource data for each lesson. Pages with a visible FAQ add FAQPage data through `src/components/Faq.astro`.
 
 ## Python execution
 
