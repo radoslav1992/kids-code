@@ -1,5 +1,4 @@
 // Related educational tools from the same maker. Keep destination URLs canonical.
-// Physics Lab is omitted from outbound links until its production domain is confirmed.
 export const currentApp = "kids";
 export const learningTheme = "playful";
 export const learningApps = [
@@ -67,7 +66,7 @@ export const learningApps = [
     "id": "physics",
     "name": "Physics Lab",
     "subject": "Physics",
-    "url": null,
+    "url": "https://thephysicslab.org",
     "description": "Launch a ball, catch a wave, and experiment with motion, forces, light, and electricity.",
     "mark": "F=ma",
     "caption": "make the invisible click",
