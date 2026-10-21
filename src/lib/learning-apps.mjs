@@ -52,7 +52,7 @@ export const learningApps = [
   },
   {
     "id": "kids",
-    "name": "Kids Code",
+    "name": "KidsCode",
     "subject": "Coding",
     "url": "https://kidscode.dev",
     "description": "Guide a robot, snap code blocks together, and make your first real Python programs.",
