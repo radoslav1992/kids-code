@@ -11,7 +11,7 @@ A colorful, kid-centered Astro website for learning programming through play, pu
 - A real Python playground with input, error feedback, Stop, local drafts, and `.py` download.
 - 4 Python project starters, a 28-term glossary, progress collection, FAQs, a parent/teacher guide, and a printable one-hour coding plan (`/one-hour-coding/`) with three timed routes for classrooms, clubs, and home.
 - 20 guided Blockly missions, a free block playground, live variable watchers, local project files, and a Python bridge.
-- 44 static HTML pages. Responsive layouts, keyboard controls, reduced motion, and original SVG robot artwork.
+- 45 static HTML pages. Responsive layouts, keyboard controls, reduced motion, and original SVG robot artwork.
 
 ## Develop and deploy
 
@@ -45,6 +45,8 @@ Official integration references:
 ## Data and external resources
 
 Google Analytics (`G-S48T3RS4FW`) is included once in the shared page layout to measure visits and site usage. No ads, user accounts, chat, or uploads. Progress, Python drafts, and pixel art are stored in localStorage on the device, with graceful handling when storage is unavailable. Clear site data to remove everything; Explore's reset clears completed activities only.
+
+Privacy and cookie consent: `/privacy/` explains accounts (none), local storage keys, Google Analytics, and the cookie choice in plain language, and is linked from the footer and the grown-ups guide. `src/components/ConsentDefaults.astro` runs first in `<head>`, before the Google tag, and sets Google Consent Mode v2 defaults: analytics and ad storage are denied by default in the EEA, the UK, and Switzerland and granted elsewhere, and a saved choice (`cookieConsent` in localStorage, kept 180 days) is restored. Visitors whose time zone is in Europe see `src/components/ConsentBanner.astro` (rendered with `ads={false}`, so it mentions statistics only): a small, non-blocking banner with equally weighted Accept and Reject buttons. Until they accept, or after Reject, Google Analytics runs without cookies. *Cookie settings* in the footer reopens the banner.
 
 Fonts load from Google Fonts; Python loads from jsDelivr. Code is executed on the device, not submitted to an execution server. The parent guide explains external requests and data behavior.
 
