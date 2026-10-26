@@ -73,6 +73,18 @@ export const learningApps = [
     "color": "#7c4733",
     "tint": "#f9e4d5",
     "path": "M16 49Q35 5 64 49 M16 49h48 M52 42l12 7-2-13"
+  },
+  {
+    "id": "earth",
+    "name": "Earth Science Lab",
+    "subject": "Earth science",
+    "url": "https://earthsciencelab.org",
+    "description": "Find an earthquake, move plates, carve a river, and follow water and rock through Earth’s cycles.",
+    "mark": "8.4",
+    "caption": "km per second of S–P lag",
+    "color": "#9a4424",
+    "tint": "#f5e4d6",
+    "path": "M12 40h12l4-14 6 26 5-36 6 30 4-12 4 6h15"
   }
 ];
 export const relatedLearning = {
