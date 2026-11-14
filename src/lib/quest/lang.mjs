@@ -11,7 +11,7 @@ export class QuestError extends Error {
   }
 }
 
-const KEYWORDS = new Set(['for', 'in', 'while', 'if', 'elif', 'else', 'def', 'return', 'break', 'continue', 'pass', 'and', 'or', 'not', 'True', 'False', 'None']);
+const KEYWORDS = new Set(['global', 'for', 'in', 'while', 'if', 'elif', 'else', 'def', 'return', 'break', 'continue', 'pass', 'and', 'or', 'not', 'True', 'False', 'None']);
 const TWO_CHAR = ['==', '!=', '<=', '>=', '//', '**', '+=', '-=', '*=', '/='];
 const ONE_CHAR = '+-*/%<>=()[],:.';
 const QUOTES = {'"': '"', "'": "'", '“': '"', '”': '"', '‘': "'", '’': "'"};
@@ -164,6 +164,19 @@ class Parser {
     const line = tok.line;
     if (tok.type === 'KW') {
       if (tok.value === 'pass') { this.next(); this.endLine(); return {type: 'Pass', line}; }
+      if (tok.value === 'global') {
+        this.next();
+        if (!this.defDepth) this.fail('"global" only works inside a function (a def).', line);
+        const names = [];
+        do {
+          const name = this.take('NAME');
+          if (!name) this.fail('After "global" comes a variable name, like: global score', line);
+          names.push(name.value);
+        } while (this.take('OP', ','));
+        this.features.add('global');
+        this.endLine();
+        return {type: 'Global', names, line};
+      }
       if (tok.value === 'break' || tok.value === 'continue') {
         this.next();
         if (!this.loopDepth) this.fail(`"${tok.value}" only works inside a loop.`, line);
@@ -600,7 +613,9 @@ export function execute(program, host = {}) {
     fail(`Bit doesn’t know "${name}". Check the spelling, or create it before you use it.`, at);
   }
   function assign(name, value) {
-    (frames.length ? frames[frames.length - 1] : globals).set(name, value);
+    const frame = frames[frames.length - 1];
+    if (!frame || frame.globalNames?.has(name)) globals.set(name, value);
+    else frame.set(name, value);
   }
 
   function call(fn, args, at) {
@@ -746,6 +761,13 @@ export function execute(program, host = {}) {
     tick(node.line);
     switch (node.type) {
       case 'Pass': return null;
+      case 'Global': {
+        const frame = frames[frames.length - 1];
+        if (!frame) fail('"global" only works inside a function (a def).', node.line);
+        frame.globalNames ??= new Set();
+        node.names.forEach(name => frame.globalNames.add(name));
+        return null;
+      }
       case 'Expr': evaluate(node.expr); return null;
       case 'Assign': {
         let value = evaluate(node.value);
@@ -813,5 +835,16 @@ export function execute(program, host = {}) {
   }
 
   block(program.body);
-  return {steps};
+  return {
+    steps,
+    /** True when the program defined a function with this name. */
+    has: name => globals.get(name)?.kind === 'function',
+    /** Call a function the program defined (used by Game Lab each tick). Every call gets a fresh step budget. */
+    call(name, args = []) {
+      const fn = globals.get(name);
+      if (!fn || fn.kind !== 'function') return null;
+      steps = 0;
+      return call(fn, args, 0);
+    },
+  };
 }

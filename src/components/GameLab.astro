@@ -1,0 +1,56 @@
+---
+// The Game Lab play screen: a falling-items board, a code editor, Run (test), and Play (live).
+import '../styles/quest.css';
+import {TOOLS} from '../lib/quest/gamelab.mjs';
+const {mission} = Astro.props;
+---
+<section class="quest-game lab-game" data-mission={mission.slug} aria-label="Game Lab">
+  <div class="quest-stage">
+    <div class="quest-hud">
+      <span class="lab-stat">Score <b id="lab-score">0</b> / {mission.target}</span>
+      <span class="lab-stat">Lives <b id="lab-lives" aria-label="Lives left">♥♥♥</b></span>
+      <span class="quest-best" id="lab-best">No stars here yet</span>
+    </div>
+    <div class="lab-said" id="lab-said" aria-live="polite"></div>
+    <div id="lab-board" class="lab-board" role="img" aria-label="Game board, 9 columns by 7 rows. Coins and rocks fall from the top. Bit moves along the bottom."></div>
+    <div class="lab-pad" aria-label="On-screen controls for live play">
+      <button type="button" class="button white" id="lab-left" aria-label="Move left">◀ Left</button>
+      <button type="button" class="button white" id="lab-right" aria-label="Move right">Right ▶</button>
+    </div>
+    <ul class="quest-legend"><li><i class="quest-key coin" aria-hidden="true"></i>Coin: catch it for 1 point</li><li><i class="quest-key rock" aria-hidden="true"></i>Rock: costs a life</li></ul>
+    <div id="lab-feedback" class="feedback" role="status">Write your code, then press Run test. Or press Play and use the arrow keys.</div>
+    <div id="lab-result" class="quest-result" hidden>
+      <div id="lab-result-stars" class="quest-result-stars" role="img" aria-label="Stars earned"></div>
+      <div class="quest-result-text"><h2 id="lab-result-title">Mission complete!</h2><p id="lab-result-note"></p></div>
+      <slot name="after-win"/>
+    </div>
+    {!mission.sandbox && <ul class="quest-goals" aria-label="Star goals">
+      <li data-goal="solved"><span class="quest-goal-star" aria-hidden="true">☆</span><span><span class="sr-only">Not yet: </span>Reach a score of {mission.target}</span></li>
+      <li data-goal="idea"><span class="quest-goal-star" aria-hidden="true">☆</span><span><span class="sr-only">Not yet: </span>{mission.idea.label}</span></li>
+      <li data-goal="short"><span class="quest-goal-star" aria-hidden="true">☆</span><span><span class="sr-only">Not yet: </span>Use {mission.lines} lines of code or fewer</span></li>
+    </ul>}
+  </div>
+  <div class="quest-code">
+    <slot/>
+    <div class="quest-editor">
+      <div class="quest-editor-bar"><span><b class="file-dot"></b> my_game.py</span><span class="quest-editor-kind">Python-style code</span></div>
+      <div class="quest-code-area">
+        <pre id="lab-lines" aria-hidden="true">1</pre>
+        <div class="quest-code-box"><textarea id="lab-code" class="code" maxlength="20000" spellcheck="false" autocapitalize="off" autocomplete="off" autocorrect="off" wrap="off" aria-label="Your game code" aria-describedby="lab-help"></textarea></div>
+      </div>
+      <p class="quest-editor-help" id="lab-help">Tab indents. Press Esc, then Tab, to leave the editor. Ctrl / ⌘ + Enter runs the test.</p>
+    </div>
+    <div class="quest-tools" role="group" aria-label="Tap a command to add it to your code">
+      {mission.tools.map(id => <button type="button" class="quest-tool" data-insert={TOOLS[id].insert} title={TOOLS[id].tip}>{TOOLS[id].label}</button>)}
+    </div>
+    <div class="quest-actions">
+      <button type="button" class="button dark" id="lab-run">▶ Run test</button>
+      <button type="button" class="button" id="lab-play">🎮 Play live</button>
+      <button type="button" class="button white" id="lab-stop" disabled>■ Stop</button>
+      <button type="button" class="button small ghost" id="lab-reset">Start over</button>
+    </div>
+    <div class="quest-hint"><button type="button" class="button small ghost" id="lab-hint">Give me a hint</button><p class="hint" id="lab-hint-text" aria-live="polite"></p></div>
+    <noscript><p class="feedback error">Turn on JavaScript to use Game Lab.</p></noscript>
+  </div>
+  <dialog id="lab-reset-dialog"><h2>Back to the starting code?</h2><p>This replaces the code you wrote for this mission.</p><div class="actions"><button type="button" class="button" id="lab-reset-confirm">Start over</button><form method="dialog"><button class="button ghost">Keep my code</button></form></div></dialog>
+</section>

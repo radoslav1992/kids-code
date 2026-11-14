@@ -1,0 +1,65 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import '../../styles/quest.css';
+import {plans, assessment} from '../../lib/quest/teaching.mjs';
+import {levels} from '../../lib/quest/levels.mjs';
+import {missions} from '../../lib/quest/gamelab.mjs';
+---
+<Layout title="Code Quest for Teachers – Free Lesson Plans & Class Progress Table" description="Free teaching resources for Code Quest: seven ready-to-teach coding lesson plans, an assessment guide, certificates, and a class progress table built from student files. No accounts needed." breadcrumbs={[['Code Quest', '/quest/'], ['For teachers', '/quest/teachers/']]}>
+<div class="wrap article" style="max-width:1000px">
+  <div class="page-head">
+    <nav class="breadcrumb" aria-label="Breadcrumb"><a href="/">Home</a><span>/</span><a href="/quest/">Code Quest</a><span>/</span><span>For teachers</span></nav>
+    <span class="eyebrow">Code Quest · For teachers · Free</span>
+    <h1>Teach coding<br/>with confidence.<span class="h1-topic">Lesson plans and a class progress table</span></h1>
+    <p>Everything a classroom, club, or homeschool needs to run Code Quest: {plans.length} lesson plans, a way to follow your class’s progress, printable certificates, and answers to every level. No accounts, no cost, and no student data leaves the device.</p>
+    <div class="topic-list"><span>{levels.length + missions.length} levels and missions</span><span>{plans.length} lesson plans</span><span>Class table</span><span>Certificates</span></div>
+  </div>
+
+  <h2>How to run Code Quest in a class</h2>
+  <ol>
+    <li><strong>Share the link.</strong> Give students <code>kidscode.dev/quest/</code>. There is nothing to install and nobody signs up. Every level is open, so you can assign any world.</li>
+    <li><strong>Pair up.</strong> One student types and the other reads and predicts. Swap each level. Pairs talk more and get stuck less than solo learners.</li>
+    <li><strong>Collect progress files.</strong> At the end of a session, each student opens their <a href="/quest/certificate/">certificate page</a>, types their name, and presses <em>Download progress file</em>. Collect the small files in a shared folder, a learning platform, or by email.</li>
+    <li><strong>Open the class table</strong> below and select all the files. You will see stars for every world and student, and can download a CSV for your gradebook.</li>
+  </ol>
+  <div class="note"><strong>Why files instead of accounts?</strong> Code Quest never asks children for a name or email, and stores progress only in their browser. A progress file is a small text file that the student chooses to create. Your class table is built entirely on your own computer: the files are never uploaded anywhere.</div>
+
+  <h2 id="class-table">Class progress table</h2>
+  <p>Select the progress files your students downloaded. You can add files from several sessions; the newest file for a name wins.</p>
+  <div class="class-tools">
+    <label class="button" for="class-files" style="cursor:pointer">Choose progress files…</label>
+    <input type="file" id="class-files" accept="application/json,.json" multiple class="sr-only"/>
+    <button type="button" class="button white" id="class-csv" disabled>Download CSV</button>
+    <button type="button" class="button small ghost" id="class-clear" disabled>Clear table</button>
+  </div>
+  <p id="class-status" class="feedback" role="status">No files yet. Your table will appear here.</p>
+  <div class="class-table-wrap" id="class-table-wrap" hidden><table class="class-table" id="class-grid"><caption class="sr-only">Stars earned by each student in each world</caption></table></div>
+
+  <h2>Lesson plans</h2>
+  <p>Each plan fits about 45 minutes: an unplugged warm-up, guided play, a challenge, a discussion, and an exit ticket. Skip the warm-up when time is short, but keep the discussion. It is where children put the idea into words.</p>
+  {plans.map(plan => <section class="lesson-plan" id={plan.id}>
+    <h3>{plan.world} <span class="plan-time">{plan.minutes} minutes</span></h3>
+    <h4>Learning objectives</h4><ul>{plan.objectives.map(o => <li>{o}</li>)}</ul>
+    <h4>Key words</h4><dl class="plan-words">{plan.vocabulary.map(([word, meaning]) => <><dt>{word}</dt><dd>{meaning}</dd></>)}</dl>
+    <h4>Unplugged warm-up</h4><p>{plan.warmup}</p>
+    <h4>Guided play</h4><p>{plan.play}</p>
+    <h4>Challenge</h4><p>{plan.challenge}</p>
+    <h4>Discussion questions</h4><ul>{plan.discussion.map(q => <li>{q}</li>)}</ul>
+    <h4>Exit ticket</h4><p>{plan.exit}</p>
+  </section>)}
+
+  <h2>Assessing progress</h2>
+  <p>Stars measure whether a program works, uses the new idea, and is concise. They are a useful signal, not a grade. For a fuller picture, watch for these four things:</p>
+  <table class="quest-book"><tbody>{assessment.map(([name, text]) => <tr><td>{name}</td><td>{text}</td></tr>)}</tbody></table>
+
+  <h2>More for your classroom</h2>
+  <ul>
+    <li><a href="/quest/guide/">Code Quest guide</a> with the full command list and a sample solution for every level.</li>
+    <li><a href="/quest/certificate/">Printable certificates</a> for students who finish a world or the whole quest.</li>
+    <li><a href="/one-hour-coding/">One-hour coding plan</a> for an introductory session.</li>
+    <li><a href="/quest/builder/">Level builder</a>: end a unit by having students design puzzles and swap links.</li>
+    <li>Questions or requests? Email <a href="mailto:info@kidscode.dev">info@kidscode.dev</a>.</li>
+  </ul>
+</div>
+<script>import '../../scripts/quest-teachers';</script>
+</Layout>

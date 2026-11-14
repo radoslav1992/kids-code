@@ -4,7 +4,7 @@ A colorful, kid-centered Astro website for learning programming through play, pu
 
 ## What's inside
 
-- Code Quest (`/quest/`): a 30-level coding game played with typed Python-style code, a level builder with share links, and a grown-ups guide with solutions.
+- Code Quest (`/quest/`): a 30-level coding game played with typed Python-style code, a level builder with share links, Game Lab (5 game-making missions), teacher resources (7 lesson plans and a class progress table), printable certificates, and a grown-ups guide with solutions.
 - 8 animated robot missions: sequencing, repetition, decomposition, and debugging.
 - Pixel art studio: 12×12 canvas, coordinates, symmetry, undo, local saving, and SVG download.
 - 8-question debugging and code-prediction activity with explanations.
@@ -12,7 +12,7 @@ A colorful, kid-centered Astro website for learning programming through play, pu
 - A real Python playground with input, error feedback, Stop, local drafts, and `.py` download.
 - 4 Python project starters, a 28-term glossary, progress collection, FAQs, a parent/teacher guide, and a printable one-hour coding plan (`/one-hour-coding/`) with three timed routes for classrooms, clubs, and home.
 - 20 guided Blockly missions, a free block playground, live variable watchers, local project files, and a Python bridge.
-- 78 static HTML pages. Responsive layouts, keyboard controls, reduced motion, and original SVG robot artwork.
+- 86 static HTML pages. Responsive layouts, keyboard controls, reduced motion, and original SVG robot artwork.
 
 ## Develop and deploy
 
@@ -29,7 +29,7 @@ npm run check
 Cloudflare Pages / Workers static assets: build command `npm run build`; output directory `dist`.
 No server, database, login, or API key is required.
 
-The production domain is **https://kidscode.dev**, configured directly in `astro.config.mjs`. Every build generates canonical URLs, `sitemap-index.xml`, and the sitemap reference in `robots.txt` for this domain; no `SITE_URL` environment variable is needed. The sitemap contains 77 page URLs, excluding the 404 page (which is also `noindex`).
+The production domain is **https://kidscode.dev**, configured directly in `astro.config.mjs`. Every build generates canonical URLs, `sitemap-index.xml`, and the sitemap reference in `robots.txt` for this domain; no `SITE_URL` environment variable is needed. The sitemap contains 85 page URLs, excluding the 404 page (which is also `noindex`).
 
 `src/layouts/Layout.astro` appends the `KidsCode` brand to page titles and emits Open Graph tags plus JSON-LD: WebSite and Organization on the home page, and BreadcrumbList on nested pages. `src/lib/seo.mjs` builds Course data for the `/blocks/` and `/python/` trails and LearningResource data for each lesson. Pages with a visible FAQ add FAQPage data through `src/components/Faq.astro`.
 
@@ -64,9 +64,11 @@ Fonts load from Google Fonts; Python loads from jsDelivr. Code is executed on th
 - `src/lib/quest/levels.mjs` is the curriculum: maps, stories, teaching text, starter code, hints, and a three-star solution per level. Thirteen levels list several `variants` of the board; the program must pass all of them, and if it fails one, that one is the layout shown. This is what makes sensing, variables, and lists necessary.
 - `src/scripts/quest/board.ts` draws the board as SVG and plays back events; `game.ts` is the editor (line numbers, auto-indent, Tab/Shift+Tab, Esc then Tab to leave, command buttons), run loop, and results.
 - `/quest/builder/` paints an 8×6 board and shares it as `#level=…` in the URL: one letter per tile, validated by `decodeShare()` before use. Links carry no code and nothing is uploaded.
+- `src/lib/quest/gamelab.mjs` powers Game Lab (`/quest/game-lab/`): a deterministic 9×7 arcade board where coins and rocks fall one row per tick. The player's program defines `on_key(key)` and `on_tick()`, and the engine calls them through `execute().call()`. Missions 1 to 4 are checked with a scripted test run (fixed key presses and fixed spawns), so feedback is fair and every solution is verified in tests; free play also supports live play with the arrow keys or on-screen buttons. The language gained `global` for variables that persist between ticks.
+- Teacher tools need no accounts or server. `/quest/teachers/` has a lesson plan per world (`teaching.mjs`) and a class progress table. Students download a small progress file from `/quest/certificate/` (which also prints a certificate), and teachers select several files to see stars per world and download a CSV. `report.mjs` validates files (size limit, known level slugs only, stars 1 to 3, cleaned names), the table is built with `textContent`, and CSV cells that start with `=`, `+`, `-`, or `@` are neutralised. Files are read on the teacher's own computer and never uploaded.
 - Stars are stored in `kids-code-quest-stars-v1` and each level's code in `kids-code-quest-code-<slug>`; a solved level also counts as a discovery (`quest-<slug>`).
 
-`tests/quest.test.mjs` runs every solution against every board variant for three stars, checks that starter code and memorised routes do not pass, compares the interpreter's output with CPython on a set of programs, parses all level code with CPython, and covers error messages, limits, map validation, and share-link decoding. The game was also exercised in headless Chromium at desktop and phone widths.
+`tests/gamelab.test.mjs` and `tests/report.test.mjs` cover Game Lab missions, the `global` statement, and progress files. `tests/quest.test.mjs` runs every solution against every board variant for three stars, checks that starter code and memorised routes do not pass, compares the interpreter's output with CPython on a set of programs, parses all level code with CPython, and covers error messages, limits, map validation, and share-link decoding. The game was also exercised in headless Chromium at desktop and phone widths.
 
 ## Block Lab
 

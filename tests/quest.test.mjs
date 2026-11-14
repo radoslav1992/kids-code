@@ -25,7 +25,7 @@ test('Code Quest has 6 worlds of 5 levels with unique slugs', () => {
   assert.equal(new Set(levels.map(l => l.slug)).size, levels.length);
   for (const level of levels) {
     assert.match(level.slug, /^[a-z][a-z-]+$/);
-    assert.ok(!['builder', 'guide'].includes(level.slug));
+    assert.ok(!['builder', 'guide', 'game-lab', 'teachers', 'certificate'].includes(level.slug));
     for (const tool of level.tools) assert.ok(TOOLS[tool], `${level.slug}: unknown tool ${tool}`);
     assert.ok(level.hints.length >= 2 && level.story.length > 40 && level.concept.length > 40 && level.teach.text.length > 40, level.slug);
   }

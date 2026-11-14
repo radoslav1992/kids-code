@@ -126,3 +126,60 @@
 @media(max-width:1000px){.quest-levels{grid-template-columns:repeat(3,minmax(0,1fr))}}
 @media(max-width:900px){.quest-game,.builder{grid-template-columns:1fr}.quest-stage{position:static}.quest-help{grid-template-columns:1fr}}
 @media(max-width:760px){.quest-stage{padding:15px}.quest-levels{grid-template-columns:repeat(2,minmax(0,1fr))}.quest-world{padding:18px}.quest-world-head{flex-wrap:wrap;gap:12px}.quest-world-stars{margin-left:0;width:100%}.quest-total .button{margin-left:0}.quest-code-area{height:250px}.quest-story svg{width:52px;height:52px}.quest-speed{margin-left:0}.quest-book td:first-child{white-space:normal}}
+
+/* Game Lab */
+.lab-stat{font-size:.8rem;font-weight:700}
+.lab-stat b{font-family:'Fredoka',sans-serif;font-weight:500;font-size:1.15rem;margin-left:4px}
+#lab-lives{color:#d6336f;letter-spacing:.08em}
+.lab-said{min-height:2.2em;margin:10px 0 0;font-weight:700;font-size:.9rem;line-height:1.5}
+.lab-board{margin:6px 0 10px}
+.lab-board svg{display:block;width:100%;max-width:470px;height:auto;margin:auto}
+.lab-bit{transition:transform .18s linear}
+.lab-pad{display:flex;gap:12px;justify-content:center;margin:0 0 12px}
+.lab-pad .button{min-width:120px}
+.quest-key.coin{background:#ffcf58;border-radius:50%}
+.lab-levels{margin-bottom:10px}
+.lab-game .quest-code-area{height:300px}
+
+/* Teachers */
+.class-tools{display:flex;flex-wrap:wrap;gap:12px;align-items:center;margin:14px 0}
+.class-tools input:focus-visible+*,.class-tools label:focus-within{outline:3px solid #da5428;outline-offset:3px}
+.class-table-wrap{overflow-x:auto;border:1.5px solid var(--ink);border-radius:16px;background:var(--white);margin:14px 0 24px}
+.class-table{border-collapse:collapse;width:100%;font-size:.82rem;min-width:760px}
+.class-table th,.class-table td{padding:10px 12px;text-align:center;border-bottom:1px solid var(--line);white-space:nowrap}
+.class-table th{background:var(--mint);font-weight:700;font-size:.74rem}
+.class-table td.class-name,.class-table th:first-child{text-align:left}
+.class-table td.class-name{font-weight:700}
+.class-table td.full{background:#e7f6d6;font-weight:700}
+.class-table td.none{color:#7d8c80}
+.class-table td.class-total{font-weight:700}
+.lesson-plan{border:1px solid var(--line);border-radius:20px;background:var(--white);padding:6px 26px 22px;margin:18px 0}
+.lesson-plan h3{display:flex;justify-content:space-between;gap:12px;align-items:baseline;margin:22px 0 4px}
+.lesson-plan h4{font-family:'DM Sans',sans-serif;font-size:.74rem;letter-spacing:.14em;text-transform:uppercase;color:var(--green);margin:20px 0 6px}
+.lesson-plan p,.lesson-plan li{font-size:.92rem;line-height:1.65}
+.lesson-plan ul{margin:6px 0;padding-left:22px}
+.plan-time{font:700 .78rem 'DM Sans',sans-serif;color:var(--muted);letter-spacing:0}
+.plan-words{display:grid;grid-template-columns:max-content 1fr;gap:6px 18px;margin:6px 0;font-size:.9rem;line-height:1.55}
+.plan-words dt{font-weight:700;font-family:ui-monospace,SFMono-Regular,Consolas,monospace;font-size:.84rem;color:var(--green)}
+.plan-words dd{margin:0}
+
+/* Certificate */
+.cert-form{max-width:560px;margin-bottom:28px}
+.cert-form input[type=text]{width:100%;font-size:1.05rem;min-height:48px}
+.cert{border:3px double var(--ink);border-radius:22px;background:#fffdf1;padding:12px;max-width:860px;margin:10px auto 40px}
+.cert-inner{border:1.5px solid #183e3560;border-radius:14px;padding:34px 30px;text-align:center;background:radial-gradient(circle at 50% 0,#fff9d6,#fffdf1 60%)}
+.cert-title{font-size:clamp(2rem,5vw,3.2rem);margin:6px 0 14px;color:var(--green)}
+.cert-small{font-size:.9rem;margin:8px 0;color:var(--muted)}
+.cert-name{font-family:'Fredoka',sans-serif;font-size:clamp(2rem,6vw,3.4rem);line-height:1.15;margin:6px auto 12px;color:var(--ink);border-bottom:2px solid var(--yellow);display:inline-block;padding:0 26px;overflow-wrap:anywhere;max-width:100%}
+.cert-body{font-size:1.05rem;line-height:1.7;color:var(--ink);max-width:560px;margin:10px auto}
+.cert-worlds{list-style:none;padding:0;margin:18px auto;max-width:460px;display:grid;gap:6px;font-size:.88rem;text-align:left}
+.cert-worlds li{display:flex;justify-content:space-between;gap:14px;border-bottom:1px dotted #183e3560;padding:3px 0}
+@media print{
+  @page{size:landscape;margin:12mm}
+  body>*:not(main){display:none!important}
+  .cert-controls{display:none!important}
+  .wrap.article{padding:0;max-width:none!important;margin:0}
+  .cert{margin:0;border-color:#000;break-inside:avoid}
+  .cert-inner{background:#fff}
+}
+@media(max-width:760px){.lesson-plan{padding:4px 18px 18px}.lesson-plan h3{flex-direction:column;gap:2px}.plan-words{grid-template-columns:1fr}.cert-inner{padding:24px 16px}}

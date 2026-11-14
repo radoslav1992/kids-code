@@ -48,6 +48,10 @@ const course = courseSchema({site: Astro.site, name: 'Code Quest', path: '/quest
   </section>
 
   <section class="section" style="padding-top:0">
+    <div class="cta-band" style="background:#fff0be"><div><span class="eyebrow">NEW · Game Lab · 5 missions</span><h2>Don’t just play games.<br/>Make one.</h2><p>Write the rules of a coin-catching arcade game with events, the game clock, and variables. Play it live with the arrow keys.</p></div><a class="button dark" href="/quest/game-lab/">Open Game Lab →</a></div>
+  </section>
+
+  <section class="section" style="padding-top:0">
     <div class="cta-band" style="background:var(--mint)"><div><span class="eyebrow">Make your own puzzles</span><h2>Build a level.<br/>Challenge a friend.</h2><p>Paint paths, rocks, and crystals, then share your level with a link.</p></div><a class="button dark" href="/quest/builder/">Open the level builder →</a></div>
   </section>
 
@@ -55,7 +59,7 @@ const course = courseSchema({site: Astro.site, name: 'Code Quest', path: '/quest
     <span class="eyebrow">{worlds.length} worlds · One big idea each</span>
     <h2>What kids learn in Code Quest</h2>
     <div class="lesson-list" style="margin-top:26px">{worlds.map((world, w) => <div class="lesson-item"><span class="lesson-number">{String(w + 1).padStart(2, '0')}</span><div><h3>{world.topic}</h3><p>{world.name}: {world.blurb}</p></div></div>)}</div>
-    <div class="note"><strong>Teaching or helping at home?</strong> The <a href="/quest/guide/">Code Quest guide for grown-ups</a> has teaching notes, the full command list, and a sample solution for every level. When the quest is finished, the <a href="/python/">Python trail</a> picks up where it leaves off.</div>
+    <div class="note"><strong>Teaching or helping at home?</strong> <a href="/quest/teachers/">Code Quest for teachers</a> has lesson plans and a class progress table, and the <a href="/quest/guide/">guide for grown-ups</a> has the full command list and a sample solution for every level. Finished? Print a <a href="/quest/certificate/">certificate</a>, then continue with the <a href="/python/">Python trail</a>.</div>
   </section>
 
   <section class="section" style="padding-top:0"><Faq items={[
@@ -65,6 +69,8 @@ const course = courseSchema({site: Astro.site, name: 'Code Quest', path: '/quest
     ['What ages is it for?', 'Code Quest suits children who can read short sentences and find letters on a keyboard, usually from about age 8. Younger children can play with a grown-up, or start with the tap-only robot missions in Code Adventures.'],
     ['How do the stars work?', 'Each level has three goals: collect every crystal, use the level’s new idea (such as a loop), and solve it within a set number of lines. Each goal earns one star, and you can replay a level any time to earn the rest.'],
     ['Why does the board change in some levels?', 'From World 4 on, some boards change between runs. That makes memorising a route impossible, so the program has to check its surroundings, read a sign, or follow a list. That is what real programs do.'],
+    ['Is there anything for teachers?', 'Yes, all free. There are seven lesson plans with warm-ups and discussion questions, a class progress table, printable certificates, and a solutions guide. Students can download a small progress file, and teachers open several together to see the whole class. Files are read on the teacher’s own computer and never uploaded.'],
+    ['Can kids make their own games?', 'Yes. Game Lab has five missions where children write the rules of a coin-catching game. They use events like key presses, the game clock, variables, and functions, then play the game live.'],
     ['Does it work on tablets and Chromebooks?', 'Yes. Code Quest runs in any up-to-date browser on a computer, Chromebook, or tablet. Command buttons add code with one tap, so little typing is needed. A phone works too, but a bigger screen is more comfortable.'],
   ]}/></section>
 </div>

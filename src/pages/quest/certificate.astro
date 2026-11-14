@@ -1,0 +1,43 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import Bot from '../../components/Bot.astro';
+import '../../styles/quest.css';
+import {worlds, levels} from '../../lib/quest/levels.mjs';
+import {missions} from '../../lib/quest/gamelab.mjs';
+const total = levels.length + missions.length;
+---
+<Layout title="Code Quest Certificate – Print Your Coding Achievement" description="Print a free Code Quest certificate that shows how many coding levels you finished and stars you earned, or save a progress file to share with your teacher." breadcrumbs={[['Code Quest', '/quest/'], ['Certificate', '/quest/certificate/']]}>
+<div class="wrap article" style="max-width:1000px">
+  <div class="page-head cert-controls">
+    <nav class="breadcrumb" aria-label="Breadcrumb"><a href="/">Home</a><span>/</span><a href="/quest/">Code Quest</a><span>/</span><span>Certificate</span></nav>
+    <span class="eyebrow">Code Quest · Certificate and progress file</span>
+    <h1>Show what<br/>you’ve built.<span class="h1-topic">Print your Code Quest certificate</span></h1>
+    <p>Type a name, then print the certificate or save a progress file for your teacher. The name stays on this page: it is not stored or sent anywhere.</p>
+  </div>
+  <div class="cert-controls cert-form">
+    <label for="cert-name">Name on the certificate</label>
+    <input type="text" id="cert-name" maxlength="40" autocomplete="off" placeholder="Your name or a nickname"/>
+    <div class="actions">
+      <button type="button" class="button dark" id="cert-print">🖨 Print certificate</button>
+      <button type="button" class="button white" id="cert-save">Download progress file ↓</button>
+    </div>
+    <p class="tiny">A progress file is a small text file with your name and stars. Teachers can combine files from a whole class in the <a href="/quest/teachers/#class-table">class progress table</a>. Use a first name or nickname, never a full name, email, or school.</p>
+    <p id="cert-empty" class="feedback" hidden>Play a level first, and your certificate will fill in. <a href="/quest/">Start Code Quest →</a></p>
+  </div>
+
+  <section class="cert" id="cert" aria-label="Certificate preview">
+    <div class="cert-inner">
+      <Bot size={96}/>
+      <p class="cert-small">Code Quest · KidsCode</p>
+      <h2 class="cert-title">Certificate of Achievement</h2>
+      <p class="cert-small">This certificate is proudly given to</p>
+      <p class="cert-name" id="cert-display-name">A Brilliant Coder</p>
+      <p class="cert-body">for writing real code and finishing <strong id="cert-done">0</strong> of {total} levels and missions, and earning <strong id="cert-stars">0</strong> stars.</p>
+      <ul class="cert-worlds" id="cert-worlds">{worlds.map(world => <li data-world={world.id}><span>{world.name}</span><b>0 / {world.levels.length * 3}</b></li>)}<li data-world="game-lab"><span>Game Lab</span><b>0 / {missions.length * 3}</b></li></ul>
+      <p class="cert-small" id="cert-complete" hidden>★ Quest complete! Every level and mission finished. ★</p>
+      <p class="cert-small"><span id="cert-date"></span> · kidscode.dev</p>
+    </div>
+  </section>
+</div>
+<script>import '../../scripts/quest-certificate';</script>
+</Layout>

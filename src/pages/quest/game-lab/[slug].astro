@@ -1,0 +1,35 @@
+---
+import Layout from '../../../layouts/Layout.astro';
+import Bot from '../../../components/Bot.astro';
+import GameLab from '../../../components/GameLab.astro';
+import {missions} from '../../../lib/quest/gamelab.mjs';
+import {lessonSchema} from '../../../lib/seo.mjs';
+export function getStaticPaths() { return missions.map(mission => ({params: {slug: mission.slug}, props: {mission}})); }
+const {mission: m} = Astro.props;
+const prev = missions[m.index - 1], next = missions[m.index + 1];
+const path = '/quest/game-lab/' + m.slug + '/';
+const title = `${m.title} – Game Lab Mission ${m.index + 1}: Make a Game with Code`;
+const schema = lessonSchema({site: Astro.site, name: title, path, description: m.concept, topic: 'Making a game', time: 8, position: m.index + 1, course: 'Game Lab', coursePath: '/quest/game-lab/'});
+---
+<Layout title={title} description={`${m.concept} Free game-making lesson for kids, no sign-up.`} breadcrumbs={[['Code Quest', '/quest/'], ['Game Lab', '/quest/game-lab/'], [`Mission ${m.index + 1}: ${m.title}`, path]]} schema={schema}>
+<div class="wrap quest-page">
+  <div class="page-head quest-head">
+    <nav class="breadcrumb" aria-label="Breadcrumb"><a href="/">Home</a><span>/</span><a href="/quest/">Code Quest</a><span>/</span><a href="/quest/game-lab/">Game Lab</a><span>/</span><span>Mission {m.index + 1} of {missions.length}</span></nav>
+    <span class="eyebrow">Game Lab · Mission {m.index + 1} of {missions.length}</span>
+    <h1>{m.title}<span class="h1-topic">Make a game with code</span></h1>
+    <p class="quest-mission"><strong>Your mission:</strong> {m.goal}</p>
+  </div>
+  <div class="quest-story"><Bot size={68}/><p>{m.story}</p></div>
+  <GameLab mission={m}>
+    <div class="quest-teach"><h2>{m.teach.title}</h2><p>{m.teach.text}</p><pre><code>{m.teach.code}</code></pre></div>
+    {next ? <a slot="after-win" class="button" href={'/quest/game-lab/' + next.slug + '/'}>Next mission →</a> : <a slot="after-win" class="button" href="/quest/certificate/">Get my certificate →</a>}
+  </GameLab>
+  <div class="note"><strong>How it works:</strong> The game calls the functions you write. <code>on_key(key)</code> runs when a key is pressed, and <code>on_tick()</code> runs on every beat of the game clock. Coins and rocks fall one row per tick. <strong>Run test</strong> checks your code the same way every time; <strong>Play live</strong> lets you use the arrow keys yourself. {m.testKeys && 'The test run presses the keys for you, so you can check your code without playing.'}</div>
+  <nav class="lesson-nav" aria-label="Mission navigation">
+    {prev ? <a class="button ghost" href={'/quest/game-lab/' + prev.slug + '/'}>← {prev.title}</a> : <a class="button ghost" href="/quest/game-lab/">← Game Lab</a>}
+    <a class="button ghost" href="/quest/game-lab/">All missions</a>
+    {next ? <a class="button dark" href={'/quest/game-lab/' + next.slug + '/'}>Next: {next.title} →</a> : <a class="button dark" href="/quest/builder/">Build a Code Quest level →</a>}
+  </nav>
+</div>
+<script>import '../../../scripts/gamelab-ui';</script>
+</Layout>

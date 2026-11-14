@@ -1,0 +1,29 @@
+---
+import Layout from '../../../layouts/Layout.astro';
+import Bot from '../../../components/Bot.astro';
+import '../../../styles/quest.css';
+import {missions} from '../../../lib/quest/gamelab.mjs';
+import {courseSchema} from '../../../lib/seo.mjs';
+const course = courseSchema({site: Astro.site, name: 'Game Lab', path: '/quest/game-lab/', description: 'Five free missions where kids write the rules of a falling-coins arcade game using events, the game clock, variables, and functions.', items: missions.map(m => ({name: m.title, path: '/quest/game-lab/' + m.slug + '/', time: 8})), ageRange: '9-'});
+---
+<Layout title="Game Lab – Make Your Own Game with Code (Free for Kids)" description="Learn to make a game with code. Five free missions teach kids events, the game clock, variables, and functions by writing the rules of a coin-catching arcade game." breadcrumbs={[['Code Quest', '/quest/'], ['Game Lab', '/quest/game-lab/']]} schema={course}>
+<div class="wrap">
+  <div class="page-head">
+    <span class="eyebrow">Code Quest · Game Lab · Free to play</span>
+    <h1>Don’t just play games.<br/>Make one.<span class="h1-topic">Learn game programming for kids</span></h1>
+    <p>In Game Lab you write the rules. Coins and rocks fall, and your code decides how Bit moves: with keys you press, or an autopilot you program. Play your game live and see your score.</p>
+    <div class="topic-list"><span>{missions.length} missions</span><span>Events and the game clock</span><span>Variables and functions</span><span>Play live</span></div>
+  </div>
+  <div class="quest-total"><Bot size={78}/><div><h2>Ready to build?</h2><p>Finish a few Code Quest worlds first, or jump straight in. The first mission needs only <code>if</code> and one command.</p></div><a class="button" href={'/quest/game-lab/' + missions[0].slug + '/'}>Start mission 1 →</a></div>
+  <ol class="quest-levels lab-levels">
+    {missions.map((m, i) => <li><a class="quest-level-link" href={'/quest/game-lab/' + m.slug + '/'} data-quest-level={'lab-' + m.slug} style="background:#fff0be"><span class="quest-level-number">{i + 1}</span><span class="quest-level-title">{m.title}</span><span class="quest-level-stars" role="img" aria-label="Not played yet">☆☆☆</span></a></li>)}
+  </ol>
+  <section class="section grid3" style="padding-top:40px">
+    <div class="card"><h3>Events</h3><p>on_key(key) runs whenever a key is pressed. Kids learn that programs can wait for something to happen, then react.</p></div>
+    <div class="card"><h3>The game clock</h3><p>on_tick() runs on every beat. It is how kids build an autopilot, an enemy, or anything that moves by itself.</p></div>
+    <div class="card"><h3>Memory</h3><p>A global variable remembers values between ticks, so Bit can bounce from wall to wall or keep its own score.</p></div>
+  </section>
+  <div class="note"><strong>Teachers:</strong> Game Lab has its own <a href="/quest/teachers/#game-lab">lesson plan</a>. Missions 1 to 4 can be checked with a scripted test run, so children get instant, fair feedback.</div>
+</div>
+<script>import '../../../scripts/quest-map';</script>
+</Layout>
