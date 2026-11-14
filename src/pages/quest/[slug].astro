@@ -1,0 +1,42 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import Bot from '../../components/Bot.astro';
+import QuestGame from '../../components/QuestGame.astro';
+import {levels, worlds, commandBook} from '../../lib/quest/levels.mjs';
+import {lessonSchema} from '../../lib/seo.mjs';
+export function getStaticPaths() { return levels.map(level => ({params: {slug: level.slug}, props: {level}})); }
+const {level: l} = Astro.props;
+const world = worlds[l.world];
+const prev = levels[l.index - 1], next = levels[l.index + 1];
+const path = '/quest/' + l.slug + '/';
+const title = `${l.title} – Code Quest Level ${l.index + 1} (${world.topic})`;
+const schema = lessonSchema({site: Astro.site, name: title, path, description: l.concept, topic: world.topic, time: 5, position: l.index + 1, course: 'Code Quest', coursePath: '/quest/'});
+---
+<Layout title={title} description={`${l.concept} A free coding game level for kids: no sign-up.`} breadcrumbs={[['Code Quest', '/quest/'], [`Level ${l.index + 1}: ${l.title}`, path]]} schema={schema}>
+<div class="wrap quest-page">
+  <div class="page-head quest-head">
+    <nav class="breadcrumb" aria-label="Breadcrumb"><a href="/">Home</a><span>/</span><a href="/quest/">Code Quest</a><span>/</span><span>Level {l.index + 1} of {levels.length}</span></nav>
+    <span class="eyebrow">World {l.world + 1} · {world.name} · Level {l.number} of {world.levels.length}</span>
+    <h1>{l.title}<span class="h1-topic">{world.topic} · A coding game for kids</span></h1>
+    <p class="quest-mission"><strong>Your mission:</strong> {l.goal}</p>
+  </div>
+  <div class="quest-story"><Bot size={68}/><p>{l.story}</p></div>
+  <QuestGame level={l}>
+    <div class="quest-teach"><h2>{l.teach.title}</h2><p>{l.teach.text}</p><pre><code>{l.teach.code}</code></pre></div>
+    {next
+      ? <a slot="after-win" class="button" href={'/quest/' + next.slug + '/'}>Next level →</a>
+      : <a slot="after-win" class="button" href="/quest/builder/">Build your own level →</a>}
+  </QuestGame>
+  <div class="quest-help">
+    <details><summary>How do I play?</summary><p>Type code in the dark box, one command on each line, or tap a command button to add it. Press <strong>Run</strong> and Bit follows your code from the top line to the bottom. The glowing line shows which command Bit is doing. Collect every crystal to finish the level.</p><p>Rocks and water stop Bit. If something goes wrong, read the message, change your code, and run it again. That is exactly how programmers work!</p></details>
+    <details><summary>Bit’s command book</summary><table class="quest-book"><tbody>{commandBook.map(([code, text]) => <tr><td>{code}</td><td>{text}</td></tr>)}</tbody></table><p class="tiny">Lines inside a loop, if, or function start with 4 spaces. <a href="/quest/guide/#language">See everything Bit understands →</a></p></details>
+  </div>
+  <div class="note"><strong>What this level teaches:</strong> {l.concept} {l.variants && 'The board changes between runs, so the code has to work on every layout.'}</div>
+  <nav class="lesson-nav" aria-label="Level navigation">
+    {prev ? <a class="button ghost" href={'/quest/' + prev.slug + '/'}>← {prev.title}</a> : <a class="button ghost" href="/quest/">← All levels</a>}
+    <a class="button ghost" href="/quest/">World map</a>
+    {next ? <a class="button dark" href={'/quest/' + next.slug + '/'}>Next: {next.title} →</a> : <a class="button dark" href="/python/">Keep going with real Python →</a>}
+  </nav>
+</div>
+<script>import '../../scripts/quest-level';</script>
+</Layout>

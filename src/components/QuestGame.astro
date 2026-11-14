@@ -1,0 +1,60 @@
+---
+// The Code Quest play screen. Pass a `level` from levels.mjs, or `custom` for the level builder.
+import '../styles/quest.css';
+import {TOOLS} from '../lib/quest/levels.mjs';
+const {level = null, custom = false} = Astro.props;
+const toolIds = custom ? ['move', 'moveN', 'left', 'right', 'around', 'for', 'def', 'if', 'else', 'while', 'whileLeft', 'color', 'elif', 'set', 'say'] : level.tools;
+const maps = custom ? [] : (level.variants || [level]);
+const chars = maps.flatMap(v => v.map).join('');
+const legend = custom
+  ? [['rock', 'Rock: blocks the way'], ['orange', 'Orange tile (ring)'], ['blue', 'Blue tile (stripes)']]
+  : [...(chars.includes('#') ? [['rock', 'Rock: blocks the way']] : []), ...(/[oO]/.test(chars) ? [['orange', 'Orange tile (ring)']] : []), ...(/[bB]/.test(chars) ? [['blue', 'Blue tile (stripes)']] : []), ...(maps.some(v => v.signs?.length) ? [['sign', 'Sign: read it with read_sign()']] : []), ...(maps.some(v => v.scroll) ? [['map', 'Bit carries a treasure map: read_map()']] : [])];
+---
+<section class="quest-game" data-level={custom ? '' : level.slug} aria-label="Code Quest game">
+  <div class="quest-stage">
+    <div class="quest-hud">
+      <span class="quest-hud-count"><svg width="16" height="18" viewBox="-16 -21 32 40" aria-hidden="true"><path d="M0 -19L14 -5L0 17L-14 -5Z" fill="#f0528a" stroke="#8f2450" stroke-width="3" stroke-linejoin="round"/></svg> <b id="quest-count">0 / 0</b> crystals</span>
+      <span id="quest-changing" class="quest-changing" hidden>↻ Changes between runs</span>
+      {!custom && <span id="quest-best" class="quest-best">No stars here yet</span>}
+    </div>
+    <div id="quest-board" class="quest-board" role="img" aria-label="Game board"></div>
+    {legend.length > 0 && <ul class="quest-legend">{legend.map(([kind, text]) => <li><i class={'quest-key ' + kind} aria-hidden="true"></i>{text}</li>)}</ul>}
+    <div id="quest-feedback" class="feedback" role="status">Read the mission, write your code, then press Run.</div>
+    <div id="quest-result" class="quest-result" hidden>
+      <div id="quest-result-stars" class="quest-result-stars" role="img" aria-label="Stars earned"></div>
+      <div class="quest-result-text"><h2 id="quest-result-title">Level complete!</h2><p id="quest-result-note"></p></div>
+      <slot name="after-win"/>
+    </div>
+    {!custom && <ul class="quest-goals" aria-label="Star goals">
+      <li data-goal="solved"><span class="quest-goal-star" aria-hidden="true">☆</span><span><span class="sr-only">Not yet: </span>Collect every crystal</span></li>
+      <li data-goal="idea"><span class="quest-goal-star" aria-hidden="true">☆</span><span><span class="sr-only">Not yet: </span>{level.idea.label}</span></li>
+      <li data-goal="short"><span class="quest-goal-star" aria-hidden="true">☆</span><span><span class="sr-only">Not yet: </span>Solve it in {level.lines} {level.lines === 1 ? 'line' : 'lines'} of code or fewer</span></li>
+    </ul>}
+  </div>
+  <div class="quest-code">
+    <slot/>
+    <div class="quest-editor">
+      <div class="quest-editor-bar"><span><b class="file-dot"></b> bit_program.py</span><span class="quest-editor-kind">Python-style code</span></div>
+      <div class="quest-code-area">
+        <pre id="quest-lines" aria-hidden="true">1</pre>
+        <div class="quest-code-box">
+          <div id="quest-marker" class="quest-marker" hidden></div>
+          <textarea id="quest-code" class="code" maxlength="20000" spellcheck="false" autocapitalize="off" autocomplete="off" autocorrect="off" wrap="off" aria-label="Your code for Bit" aria-describedby="quest-editor-help"></textarea>
+        </div>
+      </div>
+      <p class="quest-editor-help" id="quest-editor-help">Tab indents. Press Esc, then Tab, to leave the editor. Ctrl / ⌘ + Enter runs your code.</p>
+    </div>
+    <div class="quest-tools" role="group" aria-label="Tap a command to add it to your code">
+      {toolIds.map(id => <button type="button" class="quest-tool" data-insert={TOOLS[id].insert} title={TOOLS[id].tip}>{TOOLS[id].label}</button>)}
+    </div>
+    <div class="quest-actions">
+      <button type="button" class="button dark" id="quest-run">▶ Run</button>
+      <button type="button" class="button white" id="quest-stop" disabled>■ Stop</button>
+      <button type="button" class="button small ghost" id="quest-reset">Start over</button>
+      <label class="quest-speed" for="quest-speed">Speed <select id="quest-speed"><option value="normal">Normal</option><option value="fast">Fast</option></select></label>
+    </div>
+    {!custom && <div class="quest-hint"><button type="button" class="button small ghost" id="quest-hint">Give me a hint</button><p class="hint" id="quest-hint-text" aria-live="polite"></p></div>}
+    <noscript><p class="feedback error">Turn on JavaScript to play Code Quest.</p></noscript>
+  </div>
+  <dialog id="quest-reset-dialog"><h2>Back to the starting code?</h2><p>This replaces the code you wrote for this level.</p><div class="actions"><button type="button" class="button" id="quest-reset-confirm">Start over</button><form method="dialog"><button class="button ghost">Keep my code</button></form></div></dialog>
+</section>
