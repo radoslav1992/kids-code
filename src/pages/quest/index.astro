@@ -1,0 +1,73 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import Bot from '../../components/Bot.astro';
+import Faq from '../../components/Faq.astro';
+import '../../styles/quest.css';
+import {levels, worlds, MAX_STARS} from '../../lib/quest/levels.mjs';
+import {courseSchema} from '../../lib/seo.mjs';
+const course = courseSchema({site: Astro.site, name: 'Code Quest', path: '/quest/', description: 'A free coding game for kids. Write real Python-style code to guide a robot through 30 puzzle levels covering commands, loops, functions, if/else, variables, and lists.', items: levels.map(l => ({name: l.title, path: '/quest/' + l.slug + '/', time: 5})), ageRange: '8-'});
+---
+<Layout title="Code Quest – Free Coding Game for Kids with Real Code" description="Play Code Quest free: kids type real Python-style code to guide Bit the robot through 30 puzzle levels. Learn loops, functions, if/else, variables, and lists. No sign-up." breadcrumbs={[['Code Quest', '/quest/']]} schema={course}>
+<div class="wrap">
+  <div class="page-head">
+    <span class="eyebrow">Code Quest · Free to play · No sign-up</span>
+    <h1>Write real code.<br/>Collect every crystal.<span class="h1-topic">A free coding game for kids</span></h1>
+    <p>Bit the robot does exactly what your code says. Type commands, press Run, and watch your program come alive across {worlds.length} worlds and {levels.length} levels. Every level is open, and every level is free.</p>
+    <div class="topic-list"><span>{levels.length} levels</span><span>Real Python-style code</span><span>Ages 8 and up</span><span>Works on tablets</span></div>
+  </div>
+  <div class="quest-total">
+    <Bot size={78}/>
+    <div><h2>Your stars</h2><p>Up to three stars per level, saved in this browser.</p></div>
+    <span class="quest-total-number" aria-label="Stars collected"><span data-quest-total>0</span> / {MAX_STARS}</span>
+    <a class="button" id="quest-continue" href={'/quest/' + levels[0].slug + '/'}>Start level 1 →</a>
+  </div>
+  {worlds.map((world, w) => (
+    <section class="quest-world" aria-labelledby={'world-' + world.id}>
+      <div class="quest-world-head">
+        <div class="quest-world-icon" style={`background:${world.theme.tile}`} aria-hidden="true">{world.icon}</div>
+        <div><span class="eyebrow" style="margin-bottom:6px">World {w + 1} · {world.topic}</span><h2 id={'world-' + world.id}>{world.name}</h2><p>{world.blurb}</p></div>
+        <span class="quest-world-stars" data-quest-world={world.levels.map(l => l.slug).join(',')}>★ 0 / {world.levels.length * 3}</span>
+      </div>
+      <ol class="quest-levels">
+        {world.levels.map((level, i) => (
+          <li><a class="quest-level-link" href={'/quest/' + level.slug + '/'} data-quest-level={level.slug} style={`background:${world.theme.tile}`}>
+            <span class="quest-level-number">{w + 1}.{i + 1}</span>
+            <span class="quest-level-title">{level.title}</span>
+            <span class="quest-level-stars" role="img" aria-label="Not played yet">☆☆☆</span>
+          </a></li>
+        ))}
+      </ol>
+    </section>
+  ))}
+  <p class="tiny"><button type="button" class="footer-link-button" id="quest-reset-stars" hidden style="text-decoration:underline">Reset my Code Quest stars</button></p>
+
+  <section class="section grid3" style="padding-top:40px">
+    <div class="card"><h3>1. Read the mission</h3><p>Each level has one small goal and one new idea, explained with a tiny example you can copy.</p></div>
+    <div class="card"><h3>2. Write the code</h3><p>Type it yourself or tap the command buttons. The code is Python-style, so what you learn here works in real Python.</p></div>
+    <div class="card"><h3>3. Earn the stars</h3><p>One star for collecting every crystal. One for using the new idea. One for keeping your code short and tidy.</p></div>
+  </section>
+
+  <section class="section" style="padding-top:0">
+    <div class="cta-band" style="background:var(--mint)"><div><span class="eyebrow">Make your own puzzles</span><h2>Build a level.<br/>Challenge a friend.</h2><p>Paint paths, rocks, and crystals, then share your level with a link.</p></div><a class="button dark" href="/quest/builder/">Open the level builder →</a></div>
+  </section>
+
+  <section class="section" style="padding-top:0">
+    <span class="eyebrow">{worlds.length} worlds · One big idea each</span>
+    <h2>What kids learn in Code Quest</h2>
+    <div class="lesson-list" style="margin-top:26px">{worlds.map((world, w) => <div class="lesson-item"><span class="lesson-number">{String(w + 1).padStart(2, '0')}</span><div><h3>{world.topic}</h3><p>{world.name}: {world.blurb}</p></div></div>)}</div>
+    <div class="note"><strong>Teaching or helping at home?</strong> The <a href="/quest/guide/">Code Quest guide for grown-ups</a> has teaching notes, the full command list, and a sample solution for every level. When the quest is finished, the <a href="/python/">Python trail</a> picks up where it leaves off.</div>
+  </section>
+
+  <section class="section" style="padding-top:0"><Faq items={[
+    ['Is Code Quest really free?', 'Yes. All 30 levels, the level builder, and the solutions guide are free. There are no locked levels, subscriptions, trials, or ads.'],
+    ['Do kids need an account?', 'No. There is no sign-up or login. Stars and code are saved in the browser on the device being used. Clearing browser data removes them, and they do not sync between devices.'],
+    ['What programming language does Code Quest use?', 'A kid-sized version of Python. Commands like move(3), for loops, while loops, if/else, def functions, variables, and lists are written exactly as they are in real Python, so the skills carry straight over.'],
+    ['What ages is it for?', 'Code Quest suits children who can read short sentences and find letters on a keyboard, usually from about age 8. Younger children can play with a grown-up, or start with the tap-only robot missions in Code Adventures.'],
+    ['How do the stars work?', 'Each level has three goals: collect every crystal, use the level’s new idea (such as a loop), and solve it within a set number of lines. Each goal earns one star, and you can replay a level any time to earn the rest.'],
+    ['Why does the board change in some levels?', 'From World 4 on, some boards change between runs. That makes memorising a route impossible, so the program has to check its surroundings, read a sign, or follow a list. That is what real programs do.'],
+    ['Does it work on tablets and Chromebooks?', 'Yes. Code Quest runs in any up-to-date browser on a computer, Chromebook, or tablet. Command buttons add code with one tap, so little typing is needed. A phone works too, but a bigger screen is more comfortable.'],
+  ]}/></section>
+</div>
+<dialog id="quest-stars-dialog"><h2>Reset your stars?</h2><p>This clears your Code Quest stars on this device. The code you wrote stays in each level.</p><div class="actions"><button type="button" class="button" id="quest-stars-confirm">Reset stars</button><form method="dialog"><button class="button ghost">Keep my stars</button></form></div></dialog>
+<script>import '../../scripts/quest-map';</script>
+</Layout>

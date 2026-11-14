@@ -1,0 +1,48 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import QuestGame from '../../components/QuestGame.astro';
+import {commandBook} from '../../lib/quest/levels.mjs';
+const brushes = [['floor', 'Path', ''], ['crystal', 'Crystal', '◆'], ['rock', 'Rock', '●'], ['orange', 'Orange tile', '◯'], ['blue', 'Blue tile', '≡'], ['start', 'Bit', '▶'], ['water', 'Water (erase)', '']];
+---
+<Layout title="Code Quest Level Builder – Make Your Own Coding Puzzle" description="Build your own coding puzzle for free: paint paths, rocks, and crystals, solve it with Python-style code, and share your level with a link. No sign-up." breadcrumbs={[['Code Quest', '/quest/'], ['Level builder', '/quest/builder/']]}>
+<div class="wrap quest-page">
+  <div class="page-head quest-head">
+    <nav class="breadcrumb" aria-label="Breadcrumb"><a href="/">Home</a><span>/</span><a href="/quest/">Code Quest</a><span>/</span><span>Level builder</span></nav>
+    <span class="eyebrow">Code Quest · Level builder</span>
+    <h1>Build a puzzle.<br/>Challenge a friend.<span class="h1-topic">Make your own coding game level</span></h1>
+    <p>Paint a board, write the code that solves it, then share a link. Whoever opens the link gets your level to solve.</p>
+  </div>
+  <div class="builder">
+    <section class="panel" aria-labelledby="builder-title">
+      <h2 id="builder-title">1. Paint your level</h2>
+      <p class="tiny">Choose a brush, then tap tiles on the board. Arrow keys move between tiles; Enter paints.</p>
+      <div class="builder-palette" role="group" aria-label="Brushes">
+        {brushes.map(([id, label, glyph], i) => <button type="button" class="builder-brush" data-brush={id} aria-pressed={i === 0 ? 'true' : 'false'}><span class="builder-swatch" data-tile={id} aria-hidden="true">{glyph}</span>{label}</button>)}
+      </div>
+      <div id="builder-grid" class="builder-grid" role="group" aria-label="Level board, 8 columns by 6 rows"></div>
+      <p id="builder-status" class="feedback" role="status" style="margin-top:14px">Your level is ready. Write code below to test it, then share it.</p>
+      <div class="builder-share">
+        <button type="button" class="button" id="builder-share">Copy share link</button>
+        <button type="button" class="button small ghost" id="builder-clear">Clear the board</button>
+        <input type="text" id="builder-link" readonly hidden aria-label="Link to your level"/>
+      </div>
+    </section>
+    <section class="panel" aria-labelledby="builder-tips">
+      <h2 id="builder-tips">Tips for great levels</h2>
+      <ul>
+        <li><strong>Start small.</strong> A short path with one corner is a real puzzle for a beginner.</li>
+        <li><strong>Hide a pattern.</strong> Stairs, squares, and zigzags reward anyone who spots the loop.</li>
+        <li><strong>Use the painted tiles.</strong> Orange and blue tiles let a solver use <code>tile_color()</code> to decide which way to turn.</li>
+        <li><strong>Solve it yourself first.</strong> If you can’t collect every crystal, nobody can!</li>
+        <li><strong>Set a challenge.</strong> Tell your friend how many lines your solution uses, and see if they can beat it.</li>
+      </ul>
+      <details><summary>Bit’s command book</summary><table class="quest-book"><tbody>{commandBook.filter(([code]) => !/read_/.test(code)).map(([code, text]) => <tr><td>{code}</td><td>{text}</td></tr>)}</tbody></table></details>
+      <p class="tiny">Shared links contain only the layout of the board. No code, names, or other details are included, and nothing is uploaded.</p>
+    </section>
+  </div>
+  <h2 style="margin:10px 0 18px">2. Solve it with code</h2>
+  <QuestGame custom/>
+  <div class="note"><strong>New to Code Quest?</strong> Play the <a href="/quest/">30 guided levels</a> first to learn the commands, loops, functions, and decisions you can use here.</div>
+</div>
+<script>import '../../scripts/quest-builder';</script>
+</Layout>

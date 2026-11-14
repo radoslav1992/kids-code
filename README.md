@@ -4,6 +4,7 @@ A colorful, kid-centered Astro website for learning programming through play, pu
 
 ## What's inside
 
+- Code Quest (`/quest/`): a 30-level coding game played with typed Python-style code, a level builder with share links, and a grown-ups guide with solutions.
 - 8 animated robot missions: sequencing, repetition, decomposition, and debugging.
 - Pixel art studio: 12×12 canvas, coordinates, symmetry, undo, local saving, and SVG download.
 - 8-question debugging and code-prediction activity with explanations.
@@ -11,7 +12,7 @@ A colorful, kid-centered Astro website for learning programming through play, pu
 - A real Python playground with input, error feedback, Stop, local drafts, and `.py` download.
 - 4 Python project starters, a 28-term glossary, progress collection, FAQs, a parent/teacher guide, and a printable one-hour coding plan (`/one-hour-coding/`) with three timed routes for classrooms, clubs, and home.
 - 20 guided Blockly missions, a free block playground, live variable watchers, local project files, and a Python bridge.
-- 45 static HTML pages. Responsive layouts, keyboard controls, reduced motion, and original SVG robot artwork.
+- 78 static HTML pages. Responsive layouts, keyboard controls, reduced motion, and original SVG robot artwork.
 
 ## Develop and deploy
 
@@ -28,7 +29,7 @@ npm run check
 Cloudflare Pages / Workers static assets: build command `npm run build`; output directory `dist`.
 No server, database, login, or API key is required.
 
-The production domain is **https://kidscode.dev**, configured directly in `astro.config.mjs`. Every build generates canonical URLs, `sitemap-index.xml`, and the sitemap reference in `robots.txt` for this domain; no `SITE_URL` environment variable is needed. The sitemap contains 43 page URLs, excluding the 404 page (which is also `noindex`).
+The production domain is **https://kidscode.dev**, configured directly in `astro.config.mjs`. Every build generates canonical URLs, `sitemap-index.xml`, and the sitemap reference in `robots.txt` for this domain; no `SITE_URL` environment variable is needed. The sitemap contains 77 page URLs, excluding the 404 page (which is also `noindex`).
 
 `src/layouts/Layout.astro` appends the `KidsCode` brand to page titles and emits Open Graph tags plus JSON-LD: WebSite and Organization on the home page, and BreadcrumbList on nested pages. `src/lib/seo.mjs` builds Course data for the `/blocks/` and `/python/` trails and LearningResource data for each lesson. Pages with a visible FAQ add FAQPage data through `src/components/Faq.astro`.
 
@@ -44,7 +45,7 @@ Official integration references:
 
 ## Data and external resources
 
-Google Analytics (`G-S48T3RS4FW`) is included once in the shared page layout to measure visits and site usage. No ads, user accounts, chat, or uploads. Progress, Python drafts, and pixel art are stored in localStorage on the device, with graceful handling when storage is unavailable. Clear site data to remove everything; Explore's reset clears completed activities only.
+Google Analytics (`G-S48T3RS4FW`) is included once in the shared page layout to measure visits and site usage. No ads, user accounts, chat, or uploads. Progress, Code Quest stars and code, Python drafts, and pixel art are stored in localStorage on the device, with graceful handling when storage is unavailable. Clear site data to remove everything; Explore's reset clears completed activities only.
 
 Privacy and cookie consent: `/privacy/` explains accounts (none), local storage keys, Google Analytics, and the cookie choice in plain language, and is linked from the footer and the grown-ups guide. `src/components/ConsentDefaults.astro` runs first in `<head>`, before the Google tag, and sets Google Consent Mode v2 defaults: analytics and ad storage are denied by default in the EEA, the UK, and Switzerland and granted elsewhere, and a saved choice (`cookieConsent` in localStorage, kept 180 days) is restored. Visitors whose time zone is in Europe see `src/components/ConsentBanner.astro` (rendered with `ads={false}`, so it mentions statistics only): a small, non-blocking banner with equally weighted Accept and Reject buttons. Until they accept, or after Reject, Google Analytics runs without cookies. *Cookie settings* in the footer reopens the banner.
 
@@ -52,7 +53,20 @@ Fonts load from Google Fonts; Python loads from jsDelivr. Code is executed on th
 
 ## Validation
 
-`npm test` covers all mission solutions, obstacle/boundary behavior, all lesson solutions, all project starters, and quiz data. `npm run check` checks the generated HTML for unique titles, one H1, metadata, duplicate IDs, valid JSON-LD, and internal links/assets. Browser appearance should be checked on the deployed URL at desktop and mobile widths; the authoring environment's cloud browser cannot reach the local preview.
+`npm test` covers all Code Quest levels and the quest language, all mission solutions, obstacle/boundary behavior, all lesson solutions, all project starters, and quiz data. `npm run check` checks the generated HTML for unique titles, one H1, metadata, duplicate IDs, valid JSON-LD, and internal links/assets. Browser appearance should be checked on the deployed URL at desktop and mobile widths; the authoring environment's cloud browser cannot reach the local preview.
+
+## Code Quest
+
+`/quest/` is an original puzzle game in the "write code to steer a character" genre. All characters, art, maps, stories, and level designs are KidsCode's own. Bit the robot collects crystals across 6 worlds of 5 levels: commands in order, `for` loops, `def` functions and parameters, `if`/`else`/`while` with sensors, variables, and lists. Every level is open; nothing is locked or paid.
+
+- `src/lib/quest/lang.mjs` is a tokenizer, parser, and tree-walking interpreter for a small Python subset: `for`/`while`/`if`/`elif`/`else`/`def`/`return`/`break`/`continue`/`pass`, assignment and `+=`-style updates, arithmetic, comparisons, `and`/`or`/`not`, lists with indexing, and a few built-ins (`range`, `len`, `str`, `int`, `abs`, `min`, `max`, `print`). It never uses `eval`, the `Function` constructor, or generated JavaScript. Runs are limited to 20,000 statements, 600 actions, 40 nested calls, and bounded list/text sizes, so a runaway loop ends with a friendly message. Errors name the line and suggest fixes (missing colon or parentheses, wrong capital letters, near-miss spellings). Whole numbers and decimals share one number type, so `6 / 2` prints `3` where Python prints `3.0`.
+- `src/lib/quest/world.mjs` holds the board rules and Bit's commands (`move`, `turn_left`, `turn_right`, `turn_around`, `path_clear`, `tile_color`, `crystals_left`, `read_sign`, `read_map`, `say`). A run is computed up front into a list of events, then animated. `judge()` awards stars: one for collecting every crystal, one for using the level's idea (detected from the parsed program), one for staying within the line limit.
+- `src/lib/quest/levels.mjs` is the curriculum: maps, stories, teaching text, starter code, hints, and a three-star solution per level. Thirteen levels list several `variants` of the board; the program must pass all of them, and if it fails one, that one is the layout shown. This is what makes sensing, variables, and lists necessary.
+- `src/scripts/quest/board.ts` draws the board as SVG and plays back events; `game.ts` is the editor (line numbers, auto-indent, Tab/Shift+Tab, Esc then Tab to leave, command buttons), run loop, and results.
+- `/quest/builder/` paints an 8×6 board and shares it as `#level=…` in the URL: one letter per tile, validated by `decodeShare()` before use. Links carry no code and nothing is uploaded.
+- Stars are stored in `kids-code-quest-stars-v1` and each level's code in `kids-code-quest-code-<slug>`; a solved level also counts as a discovery (`quest-<slug>`).
+
+`tests/quest.test.mjs` runs every solution against every board variant for three stars, checks that starter code and memorised routes do not pass, compares the interpreter's output with CPython on a set of programs, parses all level code with CPython, and covers error messages, limits, map validation, and share-link decoding. The game was also exercised in headless Chromium at desktop and phone widths.
 
 ## Block Lab
 

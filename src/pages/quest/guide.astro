@@ -1,0 +1,60 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import '../../styles/quest.css';
+import {levels, worlds, commandBook, pythonBook} from '../../lib/quest/levels.mjs';
+---
+<Layout title="Code Quest Guide for Parents & Teachers – Answers and Teaching Notes" description="A free teacher and parent guide to Code Quest: what each world teaches, how stars work, the full command list, and a sample solution for all 30 coding game levels." breadcrumbs={[['Code Quest', '/quest/'], ['Guide for grown-ups', '/quest/guide/']]}>
+<div class="wrap article">
+  <div class="page-head">
+    <nav class="breadcrumb" aria-label="Breadcrumb"><a href="/">Home</a><span>/</span><a href="/quest/">Code Quest</a><span>/</span><span>Guide for grown-ups</span></nav>
+    <span class="eyebrow">Code Quest · For parents and teachers</span>
+    <h1>Everything you need<br/>to help.<span class="h1-topic">Teaching notes and answers for Code Quest</span></h1>
+    <p>Code Quest is a free game where children type real Python-style code to guide Bit the robot. This page explains how it works, what each world teaches, and gives one sample solution for every level.</p>
+  </div>
+
+  <h2>How Code Quest works</h2>
+  <p>Each level shows a small board. The child writes a program, presses Run, and watches Bit carry it out one line at a time, with the current line highlighted. The level is complete when Bit has collected every crystal. Rocks and water end a run; the message names the line where it happened.</p>
+  <p>There are {worlds.length} worlds of {worlds[0].levels.length} levels. All {levels.length} levels are open from the start, so a class can jump to the topic it is studying. Nothing is locked and nothing costs money.</p>
+  <h3>The three stars</h3>
+  <ol>
+    <li><strong>Collect every crystal.</strong> Any working program earns this star.</li>
+    <li><strong>Use the level’s new idea.</strong> For example, a <code>for</code> loop in Loop Lagoon. This rewards trying the concept instead of typing every step out.</li>
+    <li><strong>Keep it short.</strong> Solve the level within a set number of lines. Blank lines and comments don’t count.</li>
+  </ol>
+  <p>One star is a real success. The second and third stars are an invitation to come back and improve a working program, which is a habit worth praising.</p>
+  <h3>Levels that change between runs</h3>
+  <p>From World 4, some boards are different on each run: a path changes length, a sign shows a new number, or a treasure map holds a new list. The program is checked against every version of the board, so it has to sense, read, or calculate. If a program only works for one version, the game shows a version where it fails.</p>
+
+  <h2>What each world teaches</h2>
+  <div class="lesson-list" style="grid-template-columns:1fr">{worlds.map((world, w) => <div class="lesson-item"><span class="lesson-number">{String(w + 1).padStart(2, '0')}</span><div><h3>{world.name}: {world.topic.toLowerCase()}</h3><p>{world.levels.map(l => l.concept).join(' ')}</p></div></div>)}</div>
+
+  <h2>Helping without giving the answer</h2>
+  <ul>
+    <li><strong>Ask for a prediction.</strong> “Where will Bit be after line 3?” Then run it and compare.</li>
+    <li><strong>Read the message together.</strong> Error messages name a line. Ask what that line was supposed to do.</li>
+    <li><strong>Act it out.</strong> Left and right are from Bit’s point of view. Standing up and turning like Bit clears up most confusion.</li>
+    <li><strong>Use the hints in order.</strong> Each level has two: a nudge first, then something close to the answer.</li>
+    <li><strong>Change one thing.</strong> Encourage small edits and frequent runs instead of rewriting everything.</li>
+  </ul>
+  <div class="note"><strong>Planning a session?</strong> One world fits comfortably into 20–30 minutes. Finish with the <a href="/quest/builder/">level builder</a>: children design a puzzle, solve it, and swap links with a partner.</div>
+
+  <h2 id="language">Everything Bit understands</h2>
+  <p>The game uses a small subset of Python, run by an interpreter built for this site. Programs written here use real Python spelling and indentation.</p>
+  <h3>Bit’s commands</h3>
+  <table class="quest-book"><tbody>{commandBook.map(([code, text]) => <tr><td>{code}</td><td>{text}</td></tr>)}</tbody></table>
+  <h3>Python features</h3>
+  <table class="quest-book"><tbody>{pythonBook.map(([code, text]) => <tr><td>{code}</td><td>{text}</td></tr>)}</tbody></table>
+  <p>Some parts of Python are left out to keep things simple: there is no <code>import</code>, <code>input()</code>, dictionaries, classes, slices, or f-strings. Programs are stopped after 600 moves or 20,000 steps, so a loop that never ends cannot freeze the page. Children who are ready for the full language can continue with the <a href="/python/">Python trail</a> and the <a href="/playground/">Python playground</a>.</p>
+
+  <h2 id="answers">Sample solutions</h2>
+  <p>There is almost always more than one correct program. These are the three-star solutions we had in mind. Open one only when it is really needed!</p>
+  {worlds.map((world, w) => <section>
+    <h3>World {w + 1}: {world.name}</h3>
+    {world.levels.map((level, i) => <details><summary>{w + 1}.{i + 1} <a href={'/quest/' + level.slug + '/'}>{level.title}</a> · {level.idea.label.toLowerCase()} · {level.lines} {level.lines === 1 ? 'line' : 'lines'}</summary><p>{level.goal}</p><pre style="background:#173e34;color:#e5f1d9;border-radius:12px;padding:14px 18px;line-height:1.65;white-space:pre;overflow-x:auto"><code>{level.solution}</code></pre></details>)}
+  </section>)}
+
+  <h2>Privacy and safety</h2>
+  <p>Code Quest needs no account. Stars and code are stored in the browser on the device and are never sent to us. Children’s programs are interpreted by the game itself and can only move Bit; they cannot reach the network or other parts of the page. Level builder links contain only the board layout. See the <a href="/privacy/">privacy policy</a> for details.</p>
+  <p>Questions or ideas? Email <a href="mailto:info@kidscode.dev">info@kidscode.dev</a>.</p>
+</div>
+</Layout>
